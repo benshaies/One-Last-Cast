@@ -1,55 +1,35 @@
-# Prerequisites
-*.d
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Build directories
+/build/
+/build-windows/
+/bin/
+/obj/
+/CMakeFiles/
+/CMakeCache.txt
+/Makefile
+/*.exe
+/*.a
+/*.dll
+/*.so
+/*.o
+/MotionZero.zip
 
-# Precompiled Headers
-*.gch
-*.pch
+# IDE/editor files
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.idea/
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+# OS files
+.DS_Store
+Thumbs.db
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+# Logs
+*.log
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-# debug information files
-*.dwo
+# Misc
+*.user
+*.tmp
