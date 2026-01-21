@@ -1,11 +1,19 @@
 #include "../headers/game.h"
 #include "../headers/world.h"
 #include "../headers/player.h"
+#include "../headers/fish.h"
 
 const int GAME_WIDTH = 1280;
 const int GAME_HEIGHT = 720;
 
 RenderTexture2D target;
+
+Player player;
+
+Fish currentFish;
+
+//Temp timer
+float timer = 0.0f;
 
 void gameInit(){
     //Window init stuff
@@ -17,14 +25,34 @@ void gameInit(){
 
     //external entity Inits
     worldInit();
-    playerInit();
-
+    playerInit(&player);
 
 }
 
 void gameUpdate(){
     worldUpdate();
-    playerUpdate();
+    playerUpdate(&player);
+
+    //Testiing out fish hooking
+    if(player.state == FISHING){
+        timer += GetFrameTime();
+
+        if(timer >= 2){
+            timer = 0.0f;
+            player.state = FISH_ON_LINE;
+            fishInit(&currentFish, 1, player.rod.bobber);
+        }
+    }
+
+    if(player.state == REELING_IN_FISH){
+        fishUpdate(&currentFish, player.rod.bobber);
+    }
+
+    if(player.state == IDLE){
+        currentFish.active = false;
+    }
+
+    
 }
 
 void gameResolutionDraw(){
@@ -63,7 +91,9 @@ void gameDraw(){
         ClearBackground(WHITE);
 
         worldDraw();
-        playerDraw();
+        playerDraw(&player);
+
+        fishDraw(&currentFish);
     
     EndTextureMode();
 
