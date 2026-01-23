@@ -8,6 +8,8 @@
         FISHING,
         REELING_IN,
         FISH_ON_LINE,
+        TRYING_TO_CATCH,
+        MINI_GAME,
         REELING_IN_FISH,
     }State;
 
@@ -36,6 +38,8 @@
         State state;
         
         Rod rod;
+
+        int level;
     }Player;
 
 

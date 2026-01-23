@@ -44,6 +44,7 @@ set(SOURCES
     ../src/world.c
     ../src/player.c
     ../src/fish.c
+    ../src/minigame.c
 )
 
 # Create executable

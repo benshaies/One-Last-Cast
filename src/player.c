@@ -13,6 +13,7 @@ void playerInit(Player *player){
     player->pos = (Vector2){685, 475};
     player->rec = (Rectangle){player->pos.x, player->pos.y, 50, 100};
     player->state = IDLE;
+    player->level = 1;
 
     //Rod specifc inits
     player->rod.bottomPoint = (Vector2){player->rec.x + player->rec.width/2, player->rec.y + player->rec.height/2};
@@ -91,7 +92,7 @@ void playerUpdate(Player *player){
         
         case FISH_ON_LINE:
             if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                player->state = REELING_IN_FISH;
+                player->state = TRYING_TO_CATCH;
                 player->rod.start = player->rod.bobber;
                 player->rod.end = player->rod.topPoint;
             }
@@ -99,6 +100,7 @@ void playerUpdate(Player *player){
 
         case REELING_IN_FISH:
             
+            //Moves bobber and fish in an arc in from current point to end of rod
             player->rod.t += GetFrameTime() * player->rod.speed;
             if(player->rod.t > 1.0f){
                 player->rod.t = 1.0f;

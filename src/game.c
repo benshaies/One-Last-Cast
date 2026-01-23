@@ -2,6 +2,7 @@
 #include "../headers/world.h"
 #include "../headers/player.h"
 #include "../headers/fish.h"
+#include "../headers/minigame.h"
 
 const int GAME_WIDTH = 1280;
 const int GAME_HEIGHT = 720;
@@ -11,6 +12,8 @@ RenderTexture2D target;
 Player player;
 
 Fish currentFish;
+
+MiniGame fishGame;
 
 //Temp timer
 float timer = 0.0f;
@@ -33,25 +36,37 @@ void gameUpdate(){
     worldUpdate();
     playerUpdate(&player);
 
-    //Testiing out fish hooking
-    if(player.state == FISHING){
-        timer += GetFrameTime();
+    switch (player.state){
+        case FISHING:
+            timer += GetFrameTime();
 
-        if(timer >= 2){
-            timer = 0.0f;
-            player.state = FISH_ON_LINE;
-            fishInit(&currentFish, 1, player.rod.bobber);
-        }
+            if(timer >= 2){
+                timer = 0.0f;
+                player.state = FISH_ON_LINE;
+                fishInit(&currentFish, player.rod.bobber, player.level);
+            }
+            break;
+
+        case TRYING_TO_CATCH:
+            miniGameInit(&fishGame, currentFish.rarityLevel);
+            player.state = MINI_GAME;
+            break;
+
+        case MINI_GAME:
+            if(miniGameUpdate(&fishGame)){
+                player.state = REELING_IN_FISH;
+                miniGameReset(&fishGame);
+            }
+            break;
+
+        case REELING_IN_FISH:
+            fishUpdate(&currentFish, player.rod.bobber);
+            break;
+        
+        case IDLE:
+            fishReset(&currentFish);
+            break;
     }
-
-    if(player.state == REELING_IN_FISH){
-        fishUpdate(&currentFish, player.rod.bobber);
-    }
-
-    if(player.state == IDLE){
-        currentFish.active = false;
-    }
-
     
 }
 
@@ -94,6 +109,9 @@ void gameDraw(){
         playerDraw(&player);
 
         fishDraw(&currentFish);
+
+        miniGameDraw(&fishGame);
+
     
     EndTextureMode();
 
